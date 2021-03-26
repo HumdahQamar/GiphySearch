@@ -1,11 +1,3 @@
-import {
-  FETCH_GIFS_PENDING,
-  FETCH_GIFS_SUCCESS,
-  FETCH_GIFS_ERROR,
-  SET_SELECTED_GIF,
-  SET_OFFSET,
-} from "../actions/index";
-
 const initialState = {
   pending: false,
   gifs: [],
@@ -17,31 +9,32 @@ const initialState = {
 };
 
 export function gifsReducer(state = initialState, action) {
+  console.log(action);
   switch (action.type) {
-    case FETCH_GIFS_PENDING:
+    case "FETCH_GIFS_PENDING":
       return {
         ...state,
         pending: true,
       };
-    case FETCH_GIFS_SUCCESS:
+    case "FETCH_GIFS_SUCCESS_ASYNC":
       return {
         ...state,
         pending: false,
-        gifs: action.gifs.data,
+        gifs: action.data.data,
       };
-    case SET_SELECTED_GIF:
+    case "SET_SELECTED_GIF_ASYNC":
       return {
         ...state,
         pending: false,
         selectedGif: action.gif,
       };
-    case SET_OFFSET:
+    case "SET_OFFSET":
       return {
         ...state,
         pending: false,
         offset: action.offset,
       };
-    case FETCH_GIFS_ERROR:
+    case "FETCH_GIFS_ERROR":
       return {
         ...state,
         pending: false,

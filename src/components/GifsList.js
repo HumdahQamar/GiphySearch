@@ -1,20 +1,16 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import {
-  StyleSheet,
-  View,
-  FlatList,
-  TouchableOpacity,
-  Image,
-} from "react-native";
+import { StyleSheet, View, FlatList } from "react-native";
 
 import {
   getGifs,
   getSelectedGif,
   getOffset,
 } from "../state/reducers/gifsReducer";
-import { selectGif, setOffset } from "../services/gifsService";
+import { setSelectedGif } from "../state/actions";
+import { setOffset } from "../services/gifsService";
+import GifThumbnail from "./GifThumbnail";
 
 const styles = StyleSheet.create({
   container: {
@@ -39,18 +35,6 @@ const styles = StyleSheet.create({
 });
 
 class GifsList extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      // search: "",
-    };
-  }
-
-  selectGif(gif) {
-    this.props.setSelectedGif(gif);
-    this.props.navigation.navigate("GifViewer");
-  }
-
   loadMoreData() {
     console.log("Load more data: ", this.props.offset);
   }
@@ -64,23 +48,7 @@ class GifsList extends Component {
           onEndReached={this.loadMoreData()}
           onEndReachedThreshold={0.5}
           renderItem={({ item }) => (
-            <View
-              style={{
-                backgroundColor: "white",
-                width: "170px",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                paddingLeft: "5px",
-                paddingTop: "5px",
-              }}
-            >
-              <TouchableOpacity onPress={() => this.selectGif(item)}>
-                <Image
-                  source={{ uri: item.images.preview_gif.url }}
-                  style={{ width: 200, height: 200 }}
-                />
-              </TouchableOpacity>
-            </View>
+            <GifThumbnail item={item} navigation={this.props.navigation} />
           )}
         />
       </View>
@@ -99,7 +67,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      setSelectedGif: selectGif,
+      setSelectedGif,
       setOffset,
     },
     dispatch

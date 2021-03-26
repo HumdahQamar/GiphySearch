@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { StyleSheet, View, TextInput } from "react-native";
 
-import { api } from "../services/api";
+import { fetchGifs } from "../state/actions";
 
 const styles = StyleSheet.create({
   container: {
@@ -27,16 +27,7 @@ const styles = StyleSheet.create({
 });
 
 class SearchBar extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      search: "",
-    };
-  }
-
   setValue = (value) => {
-    // console.log(this.props);
-    // this.setState({ search: value });
     this.props.fetchGifs(value);
   };
 
@@ -56,7 +47,7 @@ class SearchBar extends Component {
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      fetchGifs: api,
+      fetchGifs,
     },
     dispatch
   );

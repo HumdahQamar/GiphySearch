@@ -1,10 +1,11 @@
 import React from "react";
 import { createStore, applyMiddleware } from "redux";
-import thunk from "redux-thunk";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Provider } from "react-redux";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import createSagaMiddleware from "redux-saga";
+import { rootSaga } from "./src/sagas/index";
 
 import HomeScreen from "./src/screens/HomeScreen";
 import GifViewer from "./src/screens/GifViewer";
@@ -12,9 +13,10 @@ import GifsList from "./src/components/GifsList";
 // eslint-disable-next-line import/no-named-as-default
 import rootReducer from "./src/state/reducers/index";
 
-const middlewares = [thunk];
-const store = createStore(rootReducer, {}, applyMiddleware(...middlewares));
+const sagaMiddleware = createSagaMiddleware();
+const store = createStore(rootReducer, {}, applyMiddleware(sagaMiddleware));
 const Stack = createStackNavigator();
+sagaMiddleware.run(rootSaga);
 
 export default function App() {
   return (
@@ -22,11 +24,6 @@ export default function App() {
       <SafeAreaProvider>
         <NavigationContainer>
           <Stack.Navigator>
-            {/* <Stack.Screen
-              name="Intro"
-              component={IntroScreen}
-              options={{ title: "" }}
-            /> */}
             <Stack.Screen
               name="Home"
               component={HomeScreen}
@@ -38,11 +35,6 @@ export default function App() {
               options={{ title: "Search Giphy", headerShown: false }}
             />
             <Stack.Screen name="GifViewer" component={GifViewer} options={{}} />
-            {/* <Stack.Screen
-              name="CurrencyList"
-              component={CurrencySelector}
-              options={{ title: "Choose Currency" }}
-            /> */}
           </Stack.Navigator>
         </NavigationContainer>
       </SafeAreaProvider>

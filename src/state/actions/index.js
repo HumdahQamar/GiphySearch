@@ -2,7 +2,8 @@ export const FETCH_GIFS_PENDING = "FETCH_GIFS_PENDING";
 export const FETCH_GIFS_SUCCESS = "FETCH_GIFS_SUCCESS";
 export const FETCH_GIFS_ERROR = "FETCH_GIFS_ERROR";
 export const SET_GIFS = "SET_GIFS";
-export const SET_SELECTED_GIF = "SET_SELECTED_GIF";
+export const FETCH_GIFS = "FETCH_GIFS";
+export const SET_SELECTED_GIF = "SET_SELECTED_GIF_ASYNC";
 export const SET_OFFSET = "SET_OFFSET";
 
 export function fetchGifsPending() {
@@ -11,12 +12,15 @@ export function fetchGifsPending() {
   };
 }
 
-export function fetchGifsSuccess(gifs) {
-  return {
-    type: FETCH_GIFS_SUCCESS,
-    gifs,
-  };
-}
+export const fetchGifsSuccess = (gifs) => ({
+  type: FETCH_GIFS_SUCCESS,
+  gifs,
+});
+
+export const fetchGifs = (query) => ({
+  type: FETCH_GIFS,
+  query,
+});
 
 export function fetchGifsError(error) {
   return {
